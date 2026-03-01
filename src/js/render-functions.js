@@ -50,6 +50,16 @@ export function createGallery(images) {
         `;
     })
     .join('');
-  gallery.innerHTML = markup;
+  gallery.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
+}
+
+const btn = document.querySelector('.load-more');
+
+export function showLoadMoreButton() {
+  btn.classList.remove('is-hidden');
+}
+
+export function hideLoadMoreButton() {
+  btn.classList.add('is-hidden');
 }
