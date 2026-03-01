@@ -21,6 +21,7 @@ loadMoreBtn.addEventListener('click', onLoadMore);
 
 async function onLoadMore() {
   page += 1;
+  hideLoadMoreButton(); 
   showLoader();
 
   try {
@@ -34,13 +35,16 @@ async function onLoadMore() {
       window.scrollBy({ top: height * 2, behavior: 'smooth' });
     }
 
-    if (page * perPage >= data.totalHits) {
+    if (page * perPage < data.totalHits) {
+      showLoadMoreButton();
+    } else {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
       });
     }
   } catch (error) {
+    showLoadMoreButton();
     iziToast.error({ message: 'Something went wrong. Please try again.' });
   } finally {
     hideLoader();
@@ -52,7 +56,7 @@ const form = document.querySelector('.form');
 form.addEventListener('submit', async event => {
   event.preventDefault();
 
-  const formEl = event.currentTarget; // ✅ зберегли форму одразу
+  const formEl = event.currentTarget;
   query = formEl.elements['search-text'].value.trim();
 
   if (query === '') {
